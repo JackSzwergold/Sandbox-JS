@@ -22,6 +22,7 @@
         'Cache-Control': 'no-cache'
       },
       success: function(data, textStatus, jqXHR) {
+        // $('div.ajax_content').html(data);
         $('div.ajax_content').html($(data).filter('div.shape#this_one'));
         $('.status').html(jqXHR.status + ' ' + textStatus);
       },
@@ -33,7 +34,7 @@
       // }
     };
 
-    if (false) {
+    if (true) {
       // Run the Ajax call via the standard method.
       $.ajax(ajax_options);
     }
