@@ -123,7 +123,7 @@ div.shape {
   position: relative;
   float: left;
   display: block;
-  width: 100%;
+  width: calc(100% - 2rem);
   height: calc(100% - 2rem);
   background: #f7882f;
   background: radial-gradient(circle farthest-corner at right bottom, #d01c1f 0%, #f7882f 60%, #f7c331 100%);
