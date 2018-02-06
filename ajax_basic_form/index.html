@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>jQuery Load</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="fonts.css" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
+  <script src="../script/jquery/jquery-3.3.1.min.js" type="text/javascript"></script>
+  <script src="../script/jquery/jquery-3.3.1.min.map" type="text/javascript"></script>
+  <script src="../script/jquery/jquery.noconflict.js" type="text/javascript"></script>
+  <script src="javascript.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+  <div class="success_parent">
+
+    <form action="#" method="post" id="this_form">
+
+      <div>
+        <label for="this">This</label>
+        <input type="text" id="this" name="this" value="Meh" />
+      </div>
+
+      <div>
+        <label for="that">That</label>
+        <input type="text" id="that" name="that" value="Blah" />
+      </div>
+
+      <div>
+        <input type="radio" name="duo_one[]" value="abbot">
+        <label for="abbot">Abbot</label>
+      </div>
+
+      <div>
+        <input type="radio" name="duo_one[]" value="costello">
+        <label for="costello">Costello</label>
+      </div>
+
+      <div>
+        <input type="checkbox" name="duo_two[]" value="moe" checked>
+        <label for="moe">Laurel</label>
+      </div>
+
+      <div>
+        <input type="checkbox" name="duo_two[]" value="larry">
+        <label for="larry">Hardy</label>
+      </div>
+
+      <div>
+        <button type="submit" form="this_form" value="Submit">Submit</button>
+      </div>
+
+      <div>
+        <button type="reset" form="this_form">Reset</button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="status_parent">
+    <p>Message:</p>
+    <p id="status" class="status"></p>
+  </div>
+
+</body>
