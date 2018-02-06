@@ -23,7 +23,8 @@
       },
       success: function(data, textStatus, jqXHR) {
         // $('div.ajax_content').html(data);
-        $('div.ajax_content').html($(data).filter('div.shape#this_one'));
+        // $('div.ajax_content').html($(data).filter('div.shape#this_one'));
+        $('div.ajax_content').hide().html($(data).filter('div.shape#this_one')).fadeIn(300);
         $('.status').html(jqXHR.status + ' ' + textStatus);
       },
       error: function(jqXHR, textStatus) {
