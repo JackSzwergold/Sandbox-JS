@@ -10,7 +10,7 @@
       console.log('common ' + position);
     }
     else {
-      console.log('hip the top ' + position);
+      console.log('hit the top ' + position);
     }
 
   };
