@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Using The jQuery Animate() Step Callback</title>
+    <style type="text/css">
+/*<![CDATA[*/
+       html,
+              body
+       {
+           height: 100%;
+           margin: 0px 0px 0px 0px;
+           overflow: hidden;
+           padding: 0px 0px 0px 0px;
+           width: 100%;
+       }
+       
+       img
+       {
+           border: 0px;
+           cursor: pointer;
+           height: 100px;
+           overflow: hidden;
+           position: fixed;
+           width: 100px;
+       }
+       
+       img.initial
+       {
+           left: 50%;
+           margin: -51px 0px 0px -51px;
+           top: 50%;
+       }
+       
+       /*]]>*/
+    </style>
+    <script type="text/javascript" src="./jquery/jquery-1.6.2.min.js">
+</script>
+    <script type="text/javascript">
+//<![CDATA[
+    // http://www.bennadel.com/blog/1856-Using-jQuery-s-Animate-Step-Callback-Function-To-Create-Custom-Animations.htm
+       jQuery(function($){
+           
+           var image = $('img');
+           
+           var imageWidth = image.outerWidth();
+           var imageHeight = image.outerHeight();
+           
+           var windowWidth = $(window).width();
+           var windowHeight = $(window).height();
+           
+           var minLeft = 0;
+           var maxLeft = (windowWidth - imageWidth);
+           var minTop = 0;
+           var maxTop = (windowHeight - imageHeight);
+           
+           var maxSpeed = 5;
+           
+           $(window).resize(
+               function(){
+                   windowWidth = $(window).width();
+                   windowHeight = $(window).height();
+                   
+                   maxLeft = (windowWidth - imageWidth);
+                   maxTop = (windowHeight - imageHeight);
+               }
+          );
+           
+           
+           var onMouseMove = function(event){
+               var mouseOffset = image.data('mouseOffset');
+               
+               var position = {
+                   left: (event.pageX - mouseOffset.left),
+                   top: (event.pageY - mouseOffset.top)
+               };
+               
+               position.left = Math.max(position.left, minLeft);
+               position.top = Math.max(position.top, minTop);
+               
+               position.left = Math.min(position.left, maxLeft);
+               position.top = Math.min(position.top, maxTop);
+               
+               image.css({
+                   left: (position.left + 'px'),
+                   top: (position.top + 'px')
+               });
+               
+               var mouseEvents = image.data('mouseEvents');
+               
+               if ((event.timeStamp - mouseEvents[mouseEvents.length - 1].timeStamp) > 40){
+                   mouseEvents.push(event);
+                   if (mouseEvents.length > 2){
+                       mouseEvents.shift();
+                   }
+                   
+               }
+           };
+           
+           
+           var onMouseUp = function(event){
+               $(document).unbind('mousemove mouseup');
+               
+               var lastEvent = image.data('mouseEvents').shift();
+               
+               if (!lastEvent){
+                   return;
+               }
+               
+               var deltaX = (event.pageX - lastEvent.pageX);
+               var deltaY = (event.pageY - lastEvent.pageY);
+               
+               var deltaMS = Math.max(
+                   (event.timeStamp - lastEvent.timeStamp),
+                   1
+             );
+               
+               var speedX = Math.max(
+                   Math.min((deltaX / deltaMS), maxSpeed),
+                   -maxSpeed
+             );
+               
+               var speedY = Math.max(
+                   Math.min((deltaY / deltaMS), maxSpeed),
+                   -maxSpeed
+             );
+               
+               var lastStepTime = new Date();
+               
+               image.css('text-indent', 100);
+               
+               //
+               image.animate(
+                   {
+                       textIndent: 0
+                   },
+                   {
+                       duration: (
+                           Math.max(
+                               Math.abs(speedX), 
+                               Math.abs(speedY)
+                          ) * 3000
+                     ),
+                       step: function(currentStep){
+                           speedX *= (currentStep / 100);
+                           speedY *= (currentStep / 100);
+                           
+                           var now = new Date();
+                           var stepDuration = (now.getTime() - lastStepTime.getTime());
+                           
+                           lastStepTime = now;
+                           var position = image.position();
+                           var newLeft = (position.left + (speedX * stepDuration));
+                           var newTop = (position.top + (speedY * stepDuration));
+                           
+                           
+                           if (newLeft < minLeft){
+                               newLeft = minLeft;
+                               speedX *= -1;
+                           }
+                           
+                           if (newTop < minTop){
+                               newTop = minTop;
+                               speedY *= -1;
+                           }
+                           
+                           if (newLeft > maxLeft){
+                               newLeft = maxLeft;
+                               speedX *= -1;
+                           }
+                           
+                           if (newTop > maxTop){
+                               newTop = maxTop;
+                               speedY *= -1;
+                           }
+                           
+                           image.css({
+                               left: (newLeft + 'px'),
+                               top: (newTop + 'px')
+                           });
+                       }
+                   }
+             );
+           };
+           
+           
+           image.mousedown(
+               function(event){
+                   event.preventDefault();
+                   if (image.is('.initial')){
+                       var position = image.position();
+                       image.removeClass('initial'); 
+                       image.css({
+                           left: ((position.left - 51) + 'px'),
+                           top: ((position.top - 51) + 'px')
+                       });
+                   }
+                   
+                   image.stop();
+                   
+                   var position = image.position();
+                   var mouseOffset = {
+                       left: (event.pageX - position.left + 1),
+                       top: (event.pageY - position.top + 1)
+                   };
+                   
+                   image.data('mouseOffset', mouseOffset);
+                   image.data('mouseEvents', [event]);
+                   $(document).mousemove(onMouseMove);
+                   $(document).mouseup(onMouseUp);
+               }
+         );
+           
+       });
+
+    //]]>
+    </script>
+</head>
+
+<body>
+    <img src="./clarus.jpg" alt="" class='initial' />
+</body>
+</html>

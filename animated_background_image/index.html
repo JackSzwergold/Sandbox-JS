@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Animated Header</title>
+    <style type="text/css" media="screen">
+/*<![CDATA[*/
+       body
+       {
+           background-color: #C0DEED;
+           margin: 0;
+           padding: 0;
+       }
+       
+       #header
+       {
+           height: 180px;
+           background: #8EC1DA url('bg-clouds.png') repeat-y scroll left top;
+           text-align: center;
+           margin-top: -30px;
+       }
+       
+       #header h1
+       {
+           padding-top: 35px;
+           font-family: "Myriad Pro", Helvetica, Arial, sans-serif;
+           color: white;
+           font-size: 45px;
+       }
+       
+       #content
+       {
+           background-color: #fff;
+           height: 500px;
+           width: 980px;
+           margin: 25px auto 0 auto;
+           -moz-border-radius: 10px;
+           -webkit-border-radius: 10px;
+       }
+       
+       /*]]>*/
+    </style>
+    <script type="text/javascript" src="script/jquery/jquery-1.6.4.min.js">
+</script>
+    <script type="text/javascript" src="script/jquery/jquery-ui-1.8.16.custom.min.js">
+</script>
+    <script type="text/javascript" src="script/jquery/jquery.noconflict.js">
+</script>
+    <script type="text/javascript" charset="utf-8">
+//<![CDATA[
+
+    (function($) {
+
+    $(document).ready(function() {
+
+           var scrollSpeed = 1;        // Speed in milliseconds
+           var step = 1;               // How many pixels to move per step
+           var current = 0;            // The current pixel row
+           var imageWidth = 2247;      // Background image width
+           var headerWidth = 1280;     // How wide the header is.
+           
+          var restartPosition = -(imageWidth - headerWidth);
+           
+           var header_obj = $('#header');
+
+           function scrollBg(){
+             current = (current == restartPosition) ? 0 : (current -= step);
+             header_obj.css('background-position',current+'px 0');
+           }
+           
+           var init = setInterval(function () { 
+             scrollBg();
+           }, scrollSpeed);
+
+    });
+
+    })(jQuery);
+
+    //]]>
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="header"></div><!-- #header -->
+    </div><!-- #container -->
+</body>
+</html>
